@@ -15,6 +15,7 @@
   -ms-border-radius: 12px;
   -o-border-radius: 12px;
   border-radius: 12px;
+  box-shadow: 0 0 0 50vmax rgba(0,0,0,.2);
 }
 .modal h3 {
   color: var(--main-color);
