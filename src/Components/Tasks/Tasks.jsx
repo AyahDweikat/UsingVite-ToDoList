@@ -10,13 +10,15 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
   const [flagEditing, setFlagEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
+  const [idEdit, setIdEdit] = useState("")
   const renderBackdrop = (props) => <div className="backdrop" {...props} />;
   var closeHandle = () => {
     setShowModal(false);
   };
 
-  function turnToEdit() {
+  function turnToEdit(idx) {
     setFlagEditing(true);
+    setIdEdit(idx)
   }
   function turnToTask() {
     setFlagEditing(false);
@@ -53,9 +55,10 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                   ></i>
                 </button>
               </div>
-              <div key={item.id}>
-                {flagEditing ? (
+              <div>
+                {flagEditing &&idEdit == item.id ? (
                   <input
+                    autoFocus
                     key={item.id}
                     className={styles.editInpt}
                     onBlur={() => submitInput(item.id)}
@@ -69,7 +72,7 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                     key={item.id}
                     onDoubleClick={() => {
                       setInputValue(item.task);
-                      turnToEdit();
+                      turnToEdit(item.id);
                     }}
                   >
                     {item.task}
@@ -83,7 +86,6 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                   onClick={() => {
                     setShowModal(true);
                   }}
-                  // onClick={() => deleteTask(item.id, tasks)}
                 >
                   <i
                     className="fa-solid fa-trash"
