@@ -1,0 +1,12 @@
+.toggle-theme {
+  padding: 10px;
+  height: fit-content;
+  margin: 0;
+  margin-left: auto;
+}
+section {
+  background-color: var(--main-bg-color);
+}
+
+/* @todo later */
+
