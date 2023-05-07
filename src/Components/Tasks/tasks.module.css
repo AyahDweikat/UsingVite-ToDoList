@@ -1,0 +1,121 @@
+.tasks {
+  background-color: var(--main-bg-color);
+  padding-inline-start: 8%;
+  padding-inline-end: 26%;
+}
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 36px;
+}
+
+.taskList li {
+  display: flex;
+  height: 100%;
+}
+.taskList p {
+  text-align: left;
+  text-transform: capitalize;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21.78px;
+  color: var(--main-color);
+  padding-top: 11px;
+}
+.taskList span {
+  text-align: left;
+  text-transform: capitalize;
+  font-weight: 500;
+  padding-bottom: 18px;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 16.94px;
+  color: var(--secondary-undone-color);
+}
+.taskList button {
+  outline: none;
+  border: 0px;
+}
+.btnDoneState {
+  margin: 22px 22px 12px 22px;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 100;
+}
+.undoneTask {
+  margin-block: 0px;
+  background-color: var(--bg-undone-color);
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+  border-radius: 12px;
+}
+.doneTask {
+  margin-block: 0px;
+  background-color: var(--bg-done-color);
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+  border-radius: 12px;
+}
+.doneTask p {
+  text-decoration: line-through;
+}
+.editInpt {
+  margin-top: 5px;
+  outline: none;
+  border: none;
+  width: 100%;
+  border-bottom: 2px solid var(--main-color);
+  padding-block: 10px;
+  background-color: var(--bg-input-color);
+}
+.undoneBtn i {
+  color: var(--icon-undone-color) !important;
+}
+.doneBtn {
+  background-color: transparent;
+  color: var(--bg-done-color);
+  padding: 0;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+.delEditBtn {
+  display: flex;
+  gap: 16px;
+  align-self: flex-end;
+  justify-self: flex-end;
+  background-color: transparent;
+  height: 18px;
+  width: 14px;
+  font-size: 17px;
+  margin-left: auto;
+  margin-bottom: 7px;
+  padding-right: 62px;
+  padding-left: 16px;
+}
+.deleteBtn {
+  height: 18px;
+  width: 14px;
+  font-size: 17px;
+  background-color: inherit;
+}
+input{
+  padding-left: 10px;
+}
+.btnEdit {
+  background-color: transparent;
+  height: 18px;
+  width: 14px;
+  font-size: 17px;
+  color: var(--icon-disabled-color);
+}
+.btnEdit:not(:disabled) {
+  color: var(--main-color);
+}
