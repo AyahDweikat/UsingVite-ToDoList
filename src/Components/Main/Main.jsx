@@ -2,148 +2,88 @@
 import React from "react";
 import Filters from "./Filters/Filters";
 import { useState } from "react";
-import Modal from "react-overlays/Modal";
 import Tasks from "../Tasks/Tasks";
-import { useEffect } from "react";
-import styles from './main.module.css'
-
-
-
-function* generateID() {
-  while (true) {
-    yield Math.random().toString(36).slice(2);
-  }
-}
+import styles from "./main.module.css";
+import AddModal from "./AddModal/AddModal";
 
 function Main({ searchValue }) {
-  let genID = generateID();
   const [showModal, setShowModal] = useState(false);
-  const [task, setTask] = useState("");
-  const [assignee, setAssignee] = useState("");
-  const [doingState, setDoingState] = useState(false)
-  const [allTasks, setAllTasks] = useState([])
-  const [doneTasks, setDoneTasks] = useState([])
-  const [pendingTasks, setPendingTasks] = useState([])
-  const [searchedTasks, setSearchedTasks] = useState([])
-  const [filteringFlag, setFilteringFlag] = useState(0)
+  const [allTasks, setAllTasks] = useState([]);
+  const [ActiveFilter, setActiveFilter] = useState("all");
 
-  function displayResults(allTasks){
-    if (searchValue === "" && filteringFlag == 0){
-      return allTasks;
-    } else if(searchValue === "" && filteringFlag) {
-      if(filteringFlag== 1) return doneTasks;
-      if(filteringFlag=== 2) return pendingTasks;
-    } else if (searchValue && filteringFlag == 0){
-      return searchedTasks;//done
+  const tasks = getSearchResults(searchValue, allTasks);
+  function filterTasks(tasks, ActiveFilter) {
+    if (!tasks.length) return [];
+    else if (ActiveFilter == "all") return tasks;
+    else if (ActiveFilter === "done")
+      return tasks.filter(({ isDone }) => isDone);
+    else if (ActiveFilter === "pending")
+      return tasks.filter(({ isDone }) => !isDone);
+  }
+
+  function getSearchResults(searchValue, allTasks) {
+    if (searchValue === "") {
+      return filterTasks(allTasks, ActiveFilter);
     } else {
-      if(filteringFlag==1){
-        setSearchedTasks(getSearchResults(searchValue, doneTasks))
-        return getSearchResults(searchValue, doneTasks);
-      }
-      if(filteringFlag==2) {
-        setSearchedTasks(getSearchResults(searchValue, pendingTasks))
-        return getSearchResults(searchValue, pendingTasks);
-      }
-    }
-  }
-  function filtering(tasks){
-    if(!tasks.length){
-      return [];
-    }
-    let _doneTasks = tasks.filter((item)=>{
-      return item.doingState
-    })
-    setDoneTasks(_doneTasks)
-    let _pendingTasks = tasks.filter((item)=>{
-      return !item.doingState
-    })
-    setPendingTasks(_pendingTasks)
-  }
-  function filteringTasks(obj){
-    if(obj.status =="done"){
-      setFilteringFlag(1)
-    }
-    else if(obj.status =="pending"){
-      setFilteringFlag(2)
-    } else {
-      setFilteringFlag(0)
+      return filterTasks(
+        allTasks.filter(
+          (task) =>
+            task.task.toLowerCase().includes(searchValue.toLowerCase()) ||
+            task.assignee.toLowerCase().includes(searchValue.toLowerCase())
+        ),
+        ActiveFilter
+      );
     }
   }
 
-
-  useEffect(() => {
-    // setSearchedTasks(getSearchResults(searchValue, allTasks))
-    // console.log("all")
-  console.log(allTasks)
-
-    filtering(allTasks);
-  }, [allTasks, searchValue])
-
-  function getSearchResults(searchValue, allTasks){
-    if(searchValue === ""){
-      return allTasks;
-    } else {
-      return allTasks.filter(task => task.task.toLowerCase().includes(searchValue.toLowerCase()) || task.assignee.toLowerCase().includes(searchValue.toLowerCase()) )
-    }
+  function addTask(task) {
+    setAllTasks((allTasks) => [...allTasks, task]);
   }
-  function changeState(id){
-    let _tasks = allTasks.map((item)=>{
-      if(item.id == id){
+
+  function changeState(id) {
+    let _tasks = allTasks.map((item) => {
+      if (item.id == id) {
         return {
           ...item,
-          doingState: !item.doingState
-        }
+          isDone: !item.isDone,
+        };
+      } else {
+        return item;
       }
-      else {
-        return item
-      }
-    })
+    });
     setAllTasks(_tasks);
   }
-  function editTask(id, newTask){
-    let _tasks = allTasks.map((item)=>{
-      if(item.id == id){
+  function editTask(id, newTask) {
+    let _tasks = allTasks.map((item) => {
+      if (item.id == id) {
         return {
           ...item,
           task: newTask,
-        }
+        };
+      } else {
+        return item;
       }
-      else {
-        return item
-      }
-    })
+    });
     setAllTasks(_tasks);
-    getSearchResults(searchValue, allTasks)
   }
-  function submitHandle(e) {
-    e.preventDefault();
-    setAllTasks([...allTasks, {id:genID.next().value, task, assignee, doingState}]);
-    resetHandle();
+  function deleteTask(id, allTasks) {
+    let _tasks = allTasks.filter((item) => {
+      return item.id !== id;
+    });
+    setAllTasks(_tasks);
     closeHandle();
   }
-  function resetHandle() {
-    setTask("");
-    setAssignee("");
-  }
-  function deleteTask(id, allTasks){
-    console.log(id)//error
-    let _tasks = allTasks.filter((item)=>{
-      return item.id!== id
-    })
-    setAllTasks(_tasks);
-    closeHandle()
-  }
-  const renderBackdrop = (props) => <div className="backdrop" {...props} />;
-  var closeHandle =() =>{
-    resetHandle()
-    setShowModal(false)
-  }
+  var closeHandle = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className={styles.mainSection}>
       <section className={styles.heroSection}>
         <div className={styles.heading}>
           <h2>
-            You Got <span className={styles.taskNum}>{allTasks.length} Tasks </span>
+            You Got{" "}
+            <span className={styles.taskNum}>{allTasks.length} Tasks </span>
             today
           </h2>
           <button
@@ -157,57 +97,25 @@ function Main({ searchValue }) {
             New Task
           </button>
         </div>
-        <Filters tasks={allTasks} 
-        filteringTasks={filteringTasks} 
+        <Filters
+          tasks={allTasks}
+          ActiveFilter={ActiveFilter}
+          setActiveFilter={setActiveFilter}
         />
       </section>
-      <Modal
-        className={styles.modal}
-        show={showModal}
-        onHide={closeHandle}
-        renderBackdrop={renderBackdrop}
-      >
-        <section>
-          <div className={styles.modal}>
-            <h3>Add a New Task</h3>
-            <form onSubmit={(e) => submitHandle(e)}>
-              <div className={styles.formControl}>
-                <label htmlFor="task">Task</label>
-                <input
-                  type="text"
-                  value={task}
-                  onChange={(e) => setTask(e.target.value)}
-                  className="task"
-                  placeholder="Task"
-                />
-              </div>
-              <div className={styles.formControl}>
-                <label htmlFor="assignee">Assignee</label>
-                <input
-                  type="text"
-                  value={assignee}
-                  onChange={(e) => setAssignee(e.target.value)}
-                  className="assignee"
-                  placeholder="Assignee"
-                />
-              </div>
-              <div className={styles.modalBtns}>
-                <button
-                  type="button"
-                  data-bs-dismiss="modal"
-                  onClick={closeHandle}
-                >
-                  Cancel
-                </button>
-                <button type="submit">
-                  Add
-                </button>
-              </div>
-            </form>
-          </div>
-        </section>
-      </Modal>
-      <Tasks tasks={displayResults(allTasks)} changeState={changeState} deleteTask={deleteTask} editTask={editTask} />
+      {showModal && (
+        <AddModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          addTask={addTask}
+        />
+      )}
+      <Tasks
+        tasks={tasks}
+        changeState={changeState}
+        deleteTask={deleteTask}
+        editTask={editTask}
+      />
     </div>
   );
 }

@@ -20,7 +20,7 @@ function ModalTask({closeHandle, deleteTask, id, tasks}) {
           </button>
           <button type="button" id="delBtn" 
           onClick={() => {
-            deleteTask(id,tasks);
+            deleteTask(id, tasks);
             closeHandle();
           }} 
           >

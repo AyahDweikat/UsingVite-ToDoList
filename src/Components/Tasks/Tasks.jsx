@@ -10,15 +10,14 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
   const [flagEditing, setFlagEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  const [idEdit, setIdEdit] = useState("")
+  const [idEdit, setIdEdit] = useState("");
   const renderBackdrop = (props) => <div className="backdrop" {...props} />;
   var closeHandle = () => {
     setShowModal(false);
   };
-
   function turnToEdit(idx) {
     setFlagEditing(true);
-    setIdEdit(idx)
+    setIdEdit(idx);
   }
   function turnToTask() {
     setFlagEditing(false);
@@ -38,16 +37,16 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
           return (
             <li
               key={item.id}
-              className={item.doingState ? styles.doneTask : styles.undoneTask}
+              className={item.isDone ? styles.doneTask : styles.undoneTask}
             >
               <div>
                 <button
                   className={styles.btnDoneState}
-                  onClick={() => changeState(item.id, tasks)}
+                  onClick={() => changeState(item.id)}
                 >
                   <i
                     className={
-                      item.doingState
+                      item.isDone
                         ? `fa-solid fa-circle-check ${styles.doneBtn}`
                         : `fa-regular fa-circle ${styles.undoneBtn}`
                     }
@@ -56,7 +55,7 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                 </button>
               </div>
               <div>
-                {flagEditing &&idEdit == item.id ? (
+                {flagEditing && idEdit == item.id && !item.isDone ? (
                   <input
                     autoFocus
                     key={item.id}
@@ -95,8 +94,12 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
 
                 <button
                   className={styles.btnEdit}
-                  onClick={turnToEdit}
-                  disabled={item.doingState}
+                  onClick={()=>{
+                    setInputValue(item.task);
+                    turnToEdit(item.id);
+                  }
+                  }
+                  disabled={item.isDone}
                 >
                   <i className="fa-solid fa-pen-to-square"></i>
                 </button>
