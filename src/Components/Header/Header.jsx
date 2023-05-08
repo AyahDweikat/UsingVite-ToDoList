@@ -3,12 +3,9 @@ import React from "react";
 import light from "./logo-light-theme.webp";
 import dark from "./logo-dark-theme-removebg-preview-_1_.webp";
 import styles from './header.module.css'
-import Main from "../Main/Main";
-import { useState } from "react";
 import styleTog from './toggler.module.css';
 
-function Header({ handleTheme, toggleTheme }) {
-  const [searchValue, setSearchValue] = useState("");
+function Header({ handleTheme, toggleTheme, searchValue, setSearchValue }) {
   return (
     <>
       <header>
@@ -65,7 +62,7 @@ function Header({ handleTheme, toggleTheme }) {
           <span className={styleTog.labels} data-on data-off />
         </label>
       </header>
-      <Main searchValue={searchValue} />
+      
     </>
   );
 }
