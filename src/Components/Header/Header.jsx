@@ -5,14 +5,14 @@ import dark from "./logo-dark-theme-removebg-preview-_1_.webp";
 import styles from './header.module.css'
 import styleTog from './toggler.module.css';
 
-function Header({ handleTheme, toggleTheme, searchValue, setSearchValue }) {
+function Header({ handleTheme, theme, searchValue, setSearchValue }) {
   return (
     <>
       <header>
         <div role="img" aria-label="Logo" className={styles.logo}>
           <img
             id="logoHandle"
-            src={toggleTheme ? dark : light}
+            src={theme ? dark : light}
             role="logo"
             alt="todoistic logo"
           />

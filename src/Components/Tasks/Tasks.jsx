@@ -9,8 +9,8 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
   const [showModal, setShowModal] = useState(false);
   const [flagEditing, setFlagEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
-
   const [idEdit, setIdEdit] = useState("");
+  
   const renderBackdrop = (props) => <div className="backdrop" {...props} />;
   var closeHandle = () => {
     setShowModal(false);
@@ -21,9 +21,6 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
   }
   function turnToTask() {
     setFlagEditing(false);
-  }
-  function InputHandle(e) {
-    setInputValue(e.target.value);
   }
   function submitInput(id) {
     editTask(id, inputValue);
@@ -62,7 +59,7 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                     className={styles.editInpt}
                     onBlur={() => submitInput(item.id)}
                     onChange={(e) => {
-                      InputHandle(e);
+                      setInputValue(e.target.value);
                     }}
                     value={inputValue}
                   />
