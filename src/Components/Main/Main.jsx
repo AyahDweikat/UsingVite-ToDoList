@@ -25,15 +25,14 @@ function Main({ searchValue }) {
   const [doneTasks, setDoneTasks] = useState([])
   const [pendingTasks, setPendingTasks] = useState([])
   const [searchedTasks, setSearchedTasks] = useState([])
-  const [filterTasks, setFilterTasks] = useState([])
   const [filteringFlag, setFilteringFlag] = useState(0)
 
   function displayResults(allTasks){
     if (searchValue === "" && filteringFlag == 0){
-      return allTasks;//done
+      return allTasks;
     } else if(searchValue === "" && filteringFlag) {
-      if(filteringFlag==1) return doneTasks;
-      if(filteringFlag==2) return pendingTasks;
+      if(filteringFlag== 1) return doneTasks;
+      if(filteringFlag=== 2) return pendingTasks;
     } else if (searchValue && filteringFlag == 0){
       return searchedTasks;//done
     } else {
@@ -63,14 +62,9 @@ function Main({ searchValue }) {
   function filteringTasks(obj){
     if(obj.status =="done"){
       setFilteringFlag(1)
-      setDoneTasks(obj.tasks)
-      setFilterTasks(obj.tasks)
     }
     else if(obj.status =="pending"){
-      console.log(obj.tasks)
       setFilteringFlag(2)
-      setPendingTasks(obj.tasks)
-      setFilterTasks(obj.tasks)
     } else {
       setFilteringFlag(0)
     }
@@ -80,6 +74,8 @@ function Main({ searchValue }) {
   useEffect(() => {
     // setSearchedTasks(getSearchResults(searchValue, allTasks))
     // console.log("all")
+  console.log(allTasks)
+
     filtering(allTasks);
   }, [allTasks, searchValue])
 
@@ -129,12 +125,12 @@ function Main({ searchValue }) {
     setTask("");
     setAssignee("");
   }
-  function deleteTask(id){
+  function deleteTask(id, allTasks){
+    console.log(id)//error
     let _tasks = allTasks.filter((item)=>{
-      return item.id!= id
+      return item.id!== id
     })
     setAllTasks(_tasks);
-    filtering(_tasks);
     closeHandle()
   }
   const renderBackdrop = (props) => <div className="backdrop" {...props} />;

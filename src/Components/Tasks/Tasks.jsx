@@ -84,7 +84,7 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                 <button
                   className={styles.deleteBtn}
                   onClick={() => {
-                    setShowModal(true);
+                    setShowModal(item.id);
                   }}
                 >
                   <i
@@ -92,6 +92,7 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                     style={{ color: "#FF0000" }}
                   ></i>
                 </button>
+
                 <button
                   className={styles.btnEdit}
                   onClick={turnToEdit}
@@ -102,9 +103,10 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
               </div>
               <Modal
                 className={styles.modal}
-                show={showModal}
+                show={showModal === item.id}
                 onHide={closeHandle}
                 renderBackdrop={renderBackdrop}
+                body={item.id}
               >
                 <ModalTask
                   closeHandle={closeHandle}
