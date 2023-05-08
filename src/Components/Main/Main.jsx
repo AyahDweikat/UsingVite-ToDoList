@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect } from "react";
 import Filters from "./Filters/Filters";
 import { useState } from "react";
 import Tasks from "../Tasks/Tasks";
@@ -10,6 +10,15 @@ function Main({ searchValue }) {
   const [showModal, setShowModal] = useState(false);
   const [allTasks, setAllTasks] = useState([]);
   const [ActiveFilter, setActiveFilter] = useState("all");
+
+  useEffect(() => {
+    const todos = JSON.parse(localStorage.getItem('todos'));
+    if (todos) setAllTasks(todos);
+  }, []);
+
+  setTimeout(()=>{
+    localStorage.setItem('todos', JSON.stringify(allTasks));
+  }, 1000)
 
   const tasks = getSearchResults(searchValue, allTasks);
   function filterTasks(tasks, ActiveFilter) {
