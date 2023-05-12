@@ -12,13 +12,12 @@ function Main({ searchValue }) {
   const [ActiveFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
-    const todos = JSON.parse(localStorage.getItem('todos'));
-    if (todos) setAllTasks(todos);
+    fetch("http://localhost:3000/getTasks")
+    .then(response => response.json())
+    .then(data => {
+      if(data.status === 200) setAllTasks(data.todos);
+    })
   }, []);
-
-  setTimeout(()=>{
-    localStorage.setItem('todos', JSON.stringify(allTasks));
-  }, 1000)
 
   const tasks = getSearchResults(searchValue, allTasks);
   function filterTasks(tasks, ActiveFilter) {
@@ -29,7 +28,6 @@ function Main({ searchValue }) {
     else if (ActiveFilter === "pending")
       return tasks.filter(({ isDone }) => !isDone);
   }
-
   function getSearchResults(searchValue, allTasks) {
     if (searchValue === "") {
       return filterTasks(allTasks, ActiveFilter);
@@ -44,14 +42,22 @@ function Main({ searchValue }) {
       );
     }
   }
-
   function addTask(task) {
-    setAllTasks((allTasks) => [...allTasks, task]);
+    setAllTasks([...allTasks, task])
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(task)
+    };
+    fetch('http://localhost:3000/addTasks', requestOptions)
+    .then(response => response.json())
+    .then(data =>data);
   }
-
   function changeState(id) {
+    let newState;
     let _tasks = allTasks.map((item) => {
       if (item.id == id) {
+        newState= !item.isDone;
         return {
           ...item,
           isDone: !item.isDone,
@@ -61,6 +67,14 @@ function Main({ searchValue }) {
       }
     });
     setAllTasks(_tasks);
+    const requestOptions = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({isDone:newState})
+    };
+    fetch(`http://localhost:3000/changedoneState/${id}`, requestOptions)
+    .then(response => response.json())
+    .then(data =>data);
   }
   function editTask(id, newTask) {
     let _tasks = allTasks.map((item) => {
@@ -74,12 +88,26 @@ function Main({ searchValue }) {
       }
     });
     setAllTasks(_tasks);
+    const requestOptions = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({task: newTask})
+    };
+    fetch(`http://localhost:3000/editTask/${id}`, requestOptions)
+    .then(response => response.json())
+    .then(data =>data);
   }
   function deleteTask(id, allTasks) {
     let _tasks = allTasks.filter((item) => {
       return item.id !== id;
     });
     setAllTasks(_tasks);
+    const requestOptions = {
+      method: 'DELETE',
+    };
+    fetch(`http://localhost:3000/deleteTask/${id}`, requestOptions)
+    .then(response => response.json())
+    .then(data =>data);
     closeHandle();
   }
   var closeHandle = () => {
