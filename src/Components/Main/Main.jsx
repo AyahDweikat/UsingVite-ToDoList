@@ -12,7 +12,7 @@ function Main({ searchValue }) {
   const [ActiveFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
-    fetch("http://localhost:3000/getTasks")
+    fetch("/getTasks")
     .then(response => response.json())
     .then(data => {
       if(data.status === 200) setAllTasks(data.todos);
@@ -49,7 +49,7 @@ function Main({ searchValue }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(task)
     };
-    fetch('http://localhost:3000/addTasks', requestOptions)
+    fetch('/addTasks', requestOptions)
     .then(response => response.json())
     .then(data =>data);
   }
@@ -72,7 +72,7 @@ function Main({ searchValue }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({isDone:newState})
     };
-    fetch(`http://localhost:3000/changedoneState/${id}`, requestOptions)
+    fetch(`/changedoneState/${id}`, requestOptions)
     .then(response => response.json())
     .then(data =>data);
   }
@@ -93,7 +93,7 @@ function Main({ searchValue }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({task: newTask})
     };
-    fetch(`http://localhost:3000/editTask/${id}`, requestOptions)
+    fetch(`/editTask/${id}`, requestOptions)
     .then(response => response.json())
     .then(data =>data);
   }
@@ -105,7 +105,7 @@ function Main({ searchValue }) {
     const requestOptions = {
       method: 'DELETE',
     };
-    fetch(`http://localhost:3000/deleteTask/${id}`, requestOptions)
+    fetch(`/deleteTask/${id}`, requestOptions)
     .then(response => response.json())
     .then(data =>data);
     closeHandle();
