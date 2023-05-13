@@ -12,7 +12,11 @@ function Main({ searchValue }) {
   const [ActiveFilter, setActiveFilter] = useState("all");
 
   useEffect(() => {
-    fetch("/getTasks")
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    };
+    fetch('/getTasks', requestOptions)
     .then(response => response.json())
     .then(data => {
       if(data.status === 200) setAllTasks(data.todos);
