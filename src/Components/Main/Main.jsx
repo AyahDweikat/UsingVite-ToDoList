@@ -11,14 +11,23 @@ function Main({ searchValue }) {
   const [allTasks, setAllTasks] = useState([]);
   const [ActiveFilter, setActiveFilter] = useState("all");
 
+  function fetchData(){
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    };
+    fetch('https://todolist-backend-app-nodb.onrender.com/getTasks', requestOptions)
+    .then((response) => response.json())
+       .then((data) => {
+        if(data.status === 200) setAllTasks(data.todos);
+       })
+       .catch((err) => {
+          console.log(err);
+       });
+  }
   useEffect(() => {
-    const todos = JSON.parse(localStorage.getItem('todos'));
-    if (todos) setAllTasks(todos);
+    fetchData();
   }, []);
-
-  setTimeout(()=>{
-    localStorage.setItem('todos', JSON.stringify(allTasks));
-  }, 1000)
 
   const tasks = getSearchResults(searchValue, allTasks);
   function filterTasks(tasks, ActiveFilter) {
@@ -46,12 +55,21 @@ function Main({ searchValue }) {
   }
 
   function addTask(task) {
-    setAllTasks((allTasks) => [...allTasks, task]);
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(task)
+    };
+    fetch('https://todolist-backend-app-nodb.onrender.com/addTasks', requestOptions)
+    .then(response => response.json())
+    .then(data =>data);
+    setAllTasks([...allTasks, task])
   }
-
   function changeState(id) {
+    let newState;
     let _tasks = allTasks.map((item) => {
       if (item.id == id) {
+        newState= item.isDone;
         return {
           ...item,
           isDone: !item.isDone,
@@ -60,6 +78,14 @@ function Main({ searchValue }) {
         return item;
       }
     });
+    const requestOptions = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({isDone: id.isDone})
+    };
+    fetch(`https://todolist-backend-app-nodb.onrender.com/changedoneState/${id}`, requestOptions)
+    .then(response => response.json())
+    .then(data =>data);
     setAllTasks(_tasks);
   }
   function editTask(id, newTask) {
@@ -74,14 +100,30 @@ function Main({ searchValue }) {
       }
     });
     setAllTasks(_tasks);
+    const requestOptions = {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({task: newTask})
+    };
+    fetch(`https://todolist-backend-app-nodb.onrender.com/editTask/${id}`, requestOptions)
+    .then(response => response.json())
+    .then(data =>data);
   }
   function deleteTask(id, allTasks) {
     let _tasks = allTasks.filter((item) => {
       return item.id !== id;
     });
     setAllTasks(_tasks);
+    const requestOptions = {
+      method: 'DELETE',
+    };
+    fetch(`https://todolist-backend-app-nodb.onrender.com/deleteTask/${id}`, requestOptions)
+    .then(response => response.json())
+    .then(data =>data);
     closeHandle();
   }
+
+
   var closeHandle = () => {
     setShowModal(false);
   };

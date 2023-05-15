@@ -43,6 +43,7 @@ function AddModal({ showModal, setShowModal, addTask }) {
               <div className={styles.formControl}>
                 <label htmlFor="task">Task</label>
                 <input
+                autoFocus
                   type="text"
                   value={task}
                   onChange={(e) => setTask(e.target.value)}
