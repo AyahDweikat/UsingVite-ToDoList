@@ -13,7 +13,7 @@ function getID() {
   return generateID().next().value;
 }
 
-function AddModal({ showModal, setShowModal, addTask }) {
+function AddModal({ isModalOpen, setIsModalOpen, addTask }) {
   const [task, setTask] = useState("");
   const [assignee, setAssignee] = useState("");
 
@@ -21,7 +21,7 @@ function AddModal({ showModal, setShowModal, addTask }) {
     e.preventDefault();
     addTask({ id: getID(), task, assignee, isDone: false });
     resetHandle();
-    setShowModal(false);
+    setIsModalOpen(false);
   }
   function resetHandle() {
     setTask("");
@@ -33,7 +33,7 @@ function AddModal({ showModal, setShowModal, addTask }) {
     <div>
       <Modal
         className={styles.modal}
-        show={showModal}
+        show={isModalOpen}
         renderBackdrop={renderBackdrop}
       >
         <section>
@@ -65,7 +65,7 @@ function AddModal({ showModal, setShowModal, addTask }) {
                 <button
                   type="button"
                   data-bs-dismiss="modal"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => setIsModalOpen(false)}
                 >
                   Cancel
                 </button>

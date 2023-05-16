@@ -10,9 +10,10 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
   const [flagEditing, setFlagEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [idEdit, setIdEdit] = useState("");
-  
+  const [idToDelete, setIdToDelete] = useState("");
+
   const renderBackdrop = (props) => <div className="backdrop" {...props} />;
-  var closeHandle = () => {
+  var handleClose = () => {
     setShowModal(false);
   };
   function turnToEdit(idx) {
@@ -80,7 +81,8 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                 <button
                   className={styles.deleteBtn}
                   onClick={() => {
-                    setShowModal(item.id);
+                    setShowModal(true);
+                    setIdToDelete(item.id);
                   }}
                 >
                   <i
@@ -88,37 +90,35 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                     style={{ color: "#FF0000" }}
                   ></i>
                 </button>
-
                 <button
                   className={styles.btnEdit}
-                  onClick={()=>{
+                  onClick={() => {
                     setInputValue(item.task);
                     turnToEdit(item.id);
-                  }
-                  }
+                  }}
                   disabled={item.isDone}
                 >
                   <i className="fa-solid fa-pen-to-square"></i>
                 </button>
               </div>
-              <Modal
-                className={styles.modal}
-                show={showModal === item.id}
-                onHide={closeHandle}
-                renderBackdrop={renderBackdrop}
-                body={item.id}
-              >
-                <ModalTask
-                  closeHandle={closeHandle}
-                  deleteTask={deleteTask}
-                  tasks={tasks}
-                  id={item.id}
-                />
-              </Modal>
             </li>
           );
         })}
       </ul>
+      <Modal
+        className={styles.modal}
+        show={showModal}
+        onHide={handleClose}
+        renderBackdrop={renderBackdrop}
+        body={idToDelete}
+      >
+        <ModalTask
+          handleClose={handleClose}
+          deleteTask={deleteTask}
+          tasks={tasks}
+          id={idToDelete}
+        />
+      </Modal>
     </section>
   );
 }

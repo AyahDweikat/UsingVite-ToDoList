@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import styles from './modalTask.module.css'
-function ModalTask({closeHandle, deleteTask, id, tasks}) {
+function ModalTask({handleClose, deleteTask, id, tasks}) {
   return (
     <div>
       <div className={styles.modal}>
@@ -14,14 +14,14 @@ function ModalTask({closeHandle, deleteTask, id, tasks}) {
           <button
             type="button"
             data-bs-dismiss="modal"
-            onClick={()=>closeHandle()}
+            onClick={()=>handleClose()}
           >
             Cancel
           </button>
           <button type="button" id="delBtn" 
           onClick={() => {
             deleteTask(id, tasks);
-            closeHandle();
+            handleClose();
           }} 
           >
             Delete

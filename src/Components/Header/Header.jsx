@@ -3,11 +3,10 @@ import React from "react";
 import light from "./logo-light-theme.webp";
 import dark from "./logo-dark-theme-removebg-preview-_1_.webp";
 import styles from './header.module.css'
-import styleTog from './toggler.module.css';
+import stylesToToggler from './toggler.module.css';
 
-function Header({ handleTheme, theme, searchValue, setSearchValue }) {
+function Header({ onChangeTheme, theme, searchValue, onChangeSearchValue }) {
   return (
-    <>
       <header>
         <div role="img" aria-label="Logo" className={styles.logo}>
           <img
@@ -25,16 +24,16 @@ function Header({ handleTheme, theme, searchValue, setSearchValue }) {
               id="search"
               className={styles.search}
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={(e) => onChangeSearchValue(e.target.value)}
               placeholder="Search Tasks"
             />
           </label>
         </div>
-        <label className={styleTog.toggle}>
-          <input type="checkbox" onChange={() => handleTheme()} />
-          <span className={styleTog.slider} />
+        <label className={stylesToToggler.toggle}>
+          <input type="checkbox" onChange={() => onChangeTheme()} />
+          <span className={stylesToToggler.slider} />
           <svg
-            className={styleTog.sun}
+            className={stylesToToggler.sun}
             width={17}
             height={21}
             viewBox="0 0 17 21"
@@ -47,7 +46,7 @@ function Header({ handleTheme, theme, searchValue, setSearchValue }) {
             />
           </svg>
           <svg
-            className={styleTog.moon}
+            className={stylesToToggler.moon}
             width={14}
             height={21}
             viewBox="0 0 14 21"
@@ -59,11 +58,9 @@ function Header({ handleTheme, theme, searchValue, setSearchValue }) {
               fill="black"
             />
           </svg>
-          <span className={styleTog.labels} data-on data-off />
+          <span className={stylesToToggler.labels} data-on data-off />
         </label>
       </header>
-      
-    </>
   );
 }
 

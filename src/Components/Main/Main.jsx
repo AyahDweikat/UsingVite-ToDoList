@@ -7,9 +7,9 @@ import styles from "./main.module.css";
 import AddModal from "./AddModal/AddModal";
 
 function Main({ searchValue }) {
-  const [showModal, setShowModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [allTasks, setAllTasks] = useState([]);
-  const [ActiveFilter, setActiveFilter] = useState("all");
+  const [activeFilter, setActiveFilter] = useState("all");
 
   function fetchData(){
     const requestOptions = {
@@ -30,18 +30,18 @@ function Main({ searchValue }) {
   }, []);
 
   const tasks = getSearchResults(searchValue, allTasks);
-  function filterTasks(tasks, ActiveFilter) {
+  function filterTasks(tasks, activeFilter) {
     if (!tasks.length) return [];
-    else if (ActiveFilter == "all") return tasks;
-    else if (ActiveFilter === "done")
+    else if (activeFilter == "all") return tasks;
+    else if (activeFilter === "done")
       return tasks.filter(({ isDone }) => isDone);
-    else if (ActiveFilter === "pending")
+    else if (activeFilter === "pending")
       return tasks.filter(({ isDone }) => !isDone);
   }
 
   function getSearchResults(searchValue, allTasks) {
     if (searchValue === "") {
-      return filterTasks(allTasks, ActiveFilter);
+      return filterTasks(allTasks, activeFilter);
     } else {
       return filterTasks(
         allTasks.filter(
@@ -49,7 +49,7 @@ function Main({ searchValue }) {
             task.task.toLowerCase().includes(searchValue.toLowerCase()) ||
             task.assignee.toLowerCase().includes(searchValue.toLowerCase())
         ),
-        ActiveFilter
+        activeFilter
       );
     }
   }
@@ -120,12 +120,12 @@ function Main({ searchValue }) {
     fetch(`https://todolist-backend-app-nodb.onrender.com/deleteTask/${id}`, requestOptions)
     .then(response => response.json())
     .then(data =>data);
-    closeHandle();
+    handleClose();
   }
 
 
-  var closeHandle = () => {
-    setShowModal(false);
+  const handleClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -139,7 +139,7 @@ function Main({ searchValue }) {
           </h2>
           <button
             onClick={() => {
-              setShowModal(true);
+              setIsModalOpen(true);
             }}
           >
             <span className={styles.plusSign}>
@@ -150,14 +150,14 @@ function Main({ searchValue }) {
         </div>
         <Filters
           tasks={allTasks}
-          ActiveFilter={ActiveFilter}
+          activeFilter={activeFilter}
           setActiveFilter={setActiveFilter}
         />
       </section>
-      {showModal && (
+      {isModalOpen && (
         <AddModal
-          showModal={showModal}
-          setShowModal={setShowModal}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
           addTask={addTask}
         />
       )}
