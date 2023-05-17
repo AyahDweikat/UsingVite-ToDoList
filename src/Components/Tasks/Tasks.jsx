@@ -7,7 +7,6 @@ import Modal from "react-overlays/Modal";
 
 function Tasks({ tasks, changeState, deleteTask, editTask }) {
   const [showModal, setShowModal] = useState(false);
-  const [flagEditing, setFlagEditing] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [idEdit, setIdEdit] = useState("");
   const [idToDelete, setIdToDelete] = useState("");
@@ -17,11 +16,10 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
     setShowModal(false);
   };
   function turnToEdit(idx) {
-    setFlagEditing(true);
     setIdEdit(idx);
   }
   function turnToTask() {
-    setFlagEditing(false);
+    setIdEdit("")
   }
   function submitInput(id) {
     editTask(id, inputValue);
@@ -53,7 +51,7 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
                 </button>
               </div>
               <div>
-                {flagEditing && idEdit == item.id && !item.isDone ? (
+                {idEdit == item.id && !item.isDone ? (
                   <input
                     autoFocus
                     key={item.id}
