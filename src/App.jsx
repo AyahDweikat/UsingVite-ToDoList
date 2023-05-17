@@ -4,6 +4,7 @@ import "./App.css";
 import Header from "./Components/Header/Header";
 import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 import Main from './Components/Main/Main';
+import './responsive.css';
 
 function App() {
   const [theme, setTheme] = useState(false);
