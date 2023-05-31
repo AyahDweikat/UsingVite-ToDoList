@@ -7,17 +7,17 @@ import stylesToToggler from './toggler.module.css';
 
 function Header({ onChangeTheme, theme, searchValue, onChangeSearchValue }) {
   return (
-      <header>
+      <header data-testid="dashboard-menu">
         <div role="img" aria-label="Logo" className={styles.logo}>
           <img
             id="logoHandle"
-            src={theme ? dark : light}
+            src={theme=="dark" ? dark : light}
             role="logo"
             alt="todoistic logo"
           />
         </div>
         <div className={styles.searchHandle}>
-          <label htmlFor="seach">
+          <label htmlFor="search">
             <i className="fa-solid fa-magnifying-glass" />
             <input
               type="text"
@@ -30,7 +30,7 @@ function Header({ onChangeTheme, theme, searchValue, onChangeSearchValue }) {
           </label>
         </div>
         <label className={stylesToToggler.toggle}>
-          <input type="checkbox" onChange={() => onChangeTheme()} />
+          <input type="checkbox" onClick={() => onChangeTheme()} placeholder="themeToggler" value={theme} />
           <span className={stylesToToggler.slider} />
           <svg
             className={stylesToToggler.sun}

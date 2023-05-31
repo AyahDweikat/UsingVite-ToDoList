@@ -3,28 +3,28 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import styles from "./filters.module.css";
-function Filters({ tasks, ActiveFilter, setActiveFilter }) {
-  const doneCount = tasks.filter(({ isDone }) => isDone).length;
-  const pendingCount = tasks.length - doneCount;
+function Filters({ tasks, activeFilter, setActiveFilter }) {
+  const doneCount = tasks?.filter(({ isDone }) => isDone).length || 0;
+  const pendingCount = (tasks?.length) - doneCount;
 
   function handleDoneClick() {
-    if (ActiveFilter == "done") setActiveFilter("all");
+    if (activeFilter == "done") setActiveFilter("all");
     else setActiveFilter("done");
   }
   function handlePendingClick() {
-    if (ActiveFilter == "pending") setActiveFilter("all");
+    if (activeFilter == "pending") setActiveFilter("all");
     else setActiveFilter("pending");
   }
   return (
     <div className={styles.filters}>
       <span
-        className={ActiveFilter === "done" ? styles.active : ""}
+        className={activeFilter === "done" ? styles.active : ""}
         onClick={handleDoneClick}
       >
         Done (<span>{doneCount}</span>)
       </span>
       <span
-        className={ActiveFilter === "pending" ? styles.active : ""}
+        className={activeFilter === "pending" ? styles.active : ""}
         onClick={handlePendingClick}
       >
         Pending (<span>{pendingCount}</span>)
