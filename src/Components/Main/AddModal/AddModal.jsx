@@ -48,7 +48,7 @@ function AddModal({ isModalOpen, setIsModalOpen, addTask }) {
                   value={task}
                   onChange={(e) => setTask(e.target.value)}
                   className="task"
-                  id="taskInpt"
+                  id="task"
                   placeholder="Task"
                 />
               </div>
@@ -59,7 +59,7 @@ function AddModal({ isModalOpen, setIsModalOpen, addTask }) {
                   value={assignee}
                   onChange={(e) => setAssignee(e.target.value)}
                   className="assignee"
-                  id="AssigneeInpt"
+                  id="assignee"
                   placeholder="Assignee"
                 />
               </div>
@@ -72,7 +72,7 @@ function AddModal({ isModalOpen, setIsModalOpen, addTask }) {
                 >
                   Cancel
                 </button>
-                <button name="Add" id="submit" type="submit">Add</button>
+                <button name="Add" id="submit" type="submit">Create Task</button>
               </div>
             </form>
           </div>
