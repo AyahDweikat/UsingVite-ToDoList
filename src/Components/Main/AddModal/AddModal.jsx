@@ -30,14 +30,14 @@ function AddModal({ isModalOpen, setIsModalOpen, addTask }) {
   const renderBackdrop = (props) => <div className="backdrop" {...props} />;
 
   return (
-    <div>
+    <div id="addModal">
       <Modal
         className={styles.modal}
         show={isModalOpen}
         renderBackdrop={renderBackdrop}
       >
         <section>
-          <div className={styles.modal}>
+          <div id='sectionAddModal' className={styles.modal}>
             <h3>Add a New Task</h3>
             <form onSubmit={(e) => submitHandle(e)}>
               <div className={styles.formControl}>
@@ -48,6 +48,7 @@ function AddModal({ isModalOpen, setIsModalOpen, addTask }) {
                   value={task}
                   onChange={(e) => setTask(e.target.value)}
                   className="task"
+                  id="task"
                   placeholder="Task"
                 />
               </div>
@@ -58,6 +59,7 @@ function AddModal({ isModalOpen, setIsModalOpen, addTask }) {
                   value={assignee}
                   onChange={(e) => setAssignee(e.target.value)}
                   className="assignee"
+                  id="assignee"
                   placeholder="Assignee"
                 />
               </div>
@@ -65,11 +67,12 @@ function AddModal({ isModalOpen, setIsModalOpen, addTask }) {
                 <button
                   type="button"
                   data-bs-dismiss="modal"
+                  id="cancel"
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancel
                 </button>
-                <button type="submit">Add</button>
+                <button name="Add" id="submit" type="submit">Create Task</button>
               </div>
             </form>
           </div>

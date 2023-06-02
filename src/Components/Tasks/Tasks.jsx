@@ -29,7 +29,7 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
   return (
     <section className={styles.tasks}>
       <ul id="taskDisplay" className={styles.taskList}>
-        {tasks.map((item) => {
+        {tasks?.map((item) => {
           return (
             <li
               key={item.id}
@@ -37,6 +37,7 @@ function Tasks({ tasks, changeState, deleteTask, editTask }) {
             >
               <div>
                 <button
+                id="btnState"
                   className={styles.btnDoneState}
                   onClick={() => changeState(item.id)}
                 >
